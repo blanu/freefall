@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <title>Welcome | Wavetabs - Like Wave Only With Wave</title>
+    <meta name="google-site-verification" content="vwtl7LT112E6jF0STAwbwOk2BCJoQ7iw89ZoU5pxHXs" />
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/style.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+    <div id="tabs">
+      <ul>
+        <li><a href="#welcome"><span>Welcome</span></a></li>
+      </ul>
+      <div id="welcome">
+        <h1>Welcome to Wavetabs!</h1>
+        <p>
+          <a href="/login">Sign in with your Google Account</a>
+        </p>
+      </div>
+    </div>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/static/welcome.js"></script>
+  </body>
+</html>

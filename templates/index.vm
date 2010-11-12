@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>Wavetabs - Like Wave Only With Tabs</title>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
+    <link href="/static/style.css" rel="stylesheet" type="text/css"/>
+  </head>
+  <body>
+    <div id="tabs" class="hidden">
+      <ul>
+        #foreach($tab in $tabs)
+          <li><a href="/waves/$tab.wave.waveid"><span id="$tab.wave.waveid-label">$tab.name</span></a></li>
+        #end
+      </ul>
+    </div>
+    <div id="addParticipantsFormTemplate" class="template" title="Add participants">
+      <ul class="contacts"></ul>
+    </div>
+    <div id="renameTabFormTemplate" class="template" title="Rename tab">
+      <form>
+        <input type="text" class="renameTabField"/>
+      </form>
+    </div>
+  </body>
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
+  <script type="text/javascript" src="/lib/debug.js"></script>
+  <script type="text/javascript" src="/static/ocean.js"></script>
+  <script type="text/javascript">
+    ocean.userid="$userid";
+    #if($token)
+      ocean.token='$token';
+      ocean.authUrl=null;
+    #else
+      ocean.token=null;
+      ocean.authUrl='$authUrl';
+    #end
+  </script>
+  <script type="text/javascript" src="/static/index.js"></script>
+</html>
