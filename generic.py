@@ -46,7 +46,7 @@ class TemplatePage(GenericPage):
     template = loader.load_template(templateName)
     context={}
     context['user']=user
-    self.processContext(method, user, req, resp, args, context)
+    self.processContext(method.upper(), user, req, resp, args, context)
     body=template.merge(context, loader=loader)
 #    resp.headers['Content-Type']='text/html'
     resp.out.write(body)
@@ -56,11 +56,12 @@ class TemplatePage(GenericPage):
 
 class JsonPage(GenericPage):
   def execute(self, method, user, req, resp, args):
+    logging.info('req.body: '+str(req.body))
     try:
       obj=loads(req.body)
     except:
       obj=None
-    output=self.processJson(method, user, req, resp, args, obj)
+    output=self.processJson(method.upper(), user, req, resp, args, obj)
 #    logging.debug('json output: '+str(output))
     if output!=None:
       s=dumps(output)
@@ -77,7 +78,7 @@ class JsonPage(GenericPage):
 
 class FilePage(GenericPage):
   def execute(self, method, user, req, resp, args):
-    output=self.processFile(method, user, req, resp, args, req.body)
+    output=self.processFile(method.upper(), user, req, resp, args, req.body)
     if output:
       resp.out.write(output)
 

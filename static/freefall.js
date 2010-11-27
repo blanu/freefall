@@ -96,6 +96,7 @@ freefall.Database=function(dbid)
   }
 }
 
+/*
 wave.Shard=function(newState)
 {
 //  log('class this: '+this);
@@ -520,21 +521,11 @@ function refreshGadgetIds()
     frame.setGadgetId(name);
   });
 }
+*/
 
-function initSurf()
+function initFreefall()
 {
-  // Tabs
-  $('#tabs').tabs();
-
-  var p=new wave.Participant();
-  p.test();
-
-  getWaveId();
-  joinWave();
-
-  Web2Peer.init("wave");
-
-  loadGadgets();
+  Web2Peer.init("freefall");
 }
 
-$(document).ready(initSurf);
+$(document).ready(initFreefall);

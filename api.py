@@ -25,20 +25,140 @@ from util import *
 
 class NewDatabasePage(JsonPage):
   def processJson(self, method, user, req, resp, args, obj):
+    logging.info('new database')
+    logging.info(obj)
     if obj:
       try:
         dbid=obj['dbid']
       except:
         dbid=None
+    else:
+      dbid=None
 
-    db=newDatabase(owner, dbid=dbid)
+    logging.info('dbid: '+str(dbid))
+
+    try:
+      db=newDatabase(user, dbid=dbid)
+    except Exception, e:
+      logging.error(str(e))
     if not db:
       logging.error('Database with that id already exists '+str(dbid))
-      return
+      return None
+    else:
+      logging.error('db: '+str(db))
+      logging.info('dbid: '+str(db.dbid))
+
+      dbs=Database.all().filter("owner =", user).fetch(10)
+      results=[]
+      for rdb in dbs:
+        results.append(rdb.dbid)
+
+      logging.info('results: '+str(results))
+
+      notify('freefall', 'dbs-'+user.email().lower(), dumps(results))
+
+      return db.dbid
+
+  def requireLogin(self):
+    return True
+
+class DatabasesPage(JsonPage):
+  def processJson(self, method, user, req, resp, args, obj):
+    dbs=Database.all().filter("owner =", user).fetch(10)
+    results=[]
+    for db in dbs:
+      results.append(db.dbid)
 
 #    notify('freefall', 'dbs-'+user.email().lower()+'-newtab', dumps({'name': name, 'id': wave.waveid}))
 
-    return wave.waveid
+    return results
+
+  def requireLogin(self):
+    return True
+
+class DatabasePage(JsonPage):
+  def processJson(self, method, user, req, resp, args, obj):
+    dbid=args[0]
+
+    if method=='GET':
+      db=Database.all().filter("owner =", user).filter("dbid =", dbid).get()
+      if not db:
+        logging.error('Database with that id does not exist '+str(dbid))
+        return
+
+#    notify('freefall', 'dbs-'+user.email().lower()+'-newtab', dumps({'name': name, 'id': wave.waveid}))
+
+      results=[]
+      docs=Document.all().filter("database =", db).fetch(10)
+      for doc in docs:
+        results.append(doc.docid)
+
+      return results
+    elif method=='POST':
+      doc=newDocument(db, obj)
+      if not doc:
+        logging.error('Document id collision '+str(docid))
+        return None
+      else:
+        docs=Document.all().filter('database =', db).fetch(10)
+        results=[]
+        for rdoc in docs:
+          results.append(rdoc.docid)
+
+        logging.info('results: '+str(results))
+
+        notify('freefall', 'docs-'+user.email().lower()+'-'+db.dbid, dumps(results))
+
+        return doc.docid
+    else:
+      logging.error('Unknown method '+str(method))
+
+  def requireLogin(self):
+    return True
+
+class DocumentPage(JsonPage):
+  def processJson(self, method, user, req, resp, args, obj):
+    logging.info('document')
+    logging.info(method)
+
+    dbid=args[0]
+    docid=args[1]
+
+    db=Database.all().filter("owner =", user).filter("dbid =", dbid).get()
+    if not db:
+      logging.error('Database with that id does not exist '+str(dbid))
+      return None
+
+    if method=='GET':
+      doc=Document.all().filter("database =", db).filter('docid =', docid).get()
+      if not doc:
+        logging.error('Document with that id does not exist '+str(docid))
+        return None
+      return doc.state
+    elif method=='POST':
+      doc=newDocument(db, obj, docid=docid)
+      if not doc:
+        logging.error('Document id collision '+str(docid))
+        doc=Document.all().filter("docid =", docid).get()
+        doc.state=obj
+        doc.save()
+
+        return doc.docid
+      else:
+        docs=Document.all().filter('database =', db).fetch(10)
+        results=[]
+        for rdoc in docs:
+          results.append(rdoc.docid)
+
+        logging.info('results: '+str(results))
+
+        logging.debug('notifying')
+        notify('freefall', 'docs-'+user.email().lower()+'-'+db.dbid, dumps(results))
+        logging.debug('notified')
+
+        return doc.docid
+    else:
+      logging.error('Unknown method '+str(method))
 
   def requireLogin(self):
     return True

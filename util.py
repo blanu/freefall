@@ -64,18 +64,29 @@ def generateId():
 
   return s
 
-def newDatanase(owner):
-  dbid=generateId()
-  while Database.all().filter("dbid =", dbid).count()!=0:
+def newDatabase(owner, dbid=None):
+  logging.error('nd dbid: '+str(dbid))
+  if not dbid:
+    logging.debug('no dbid')
     dbid=generateId()
+    while Database.all().filter("dbid =", dbid).count()!=0:
+      dbid=generateId()
+  elif Database.all().filter("owner =", owner).filter("dbid =", dbid).count()!=0:
+    return None
+
+  logging.info('using '+str(dbid))
   db=Database(dbid=dbid, owner=owner)
   db.save()
   return db
 
-def newDocument(db, contents):
-  docid=generateId()
-  while Document.all().filter("docid =", docid).count()!=0:
+def newDocument(db, state, docid=None):
+  if not docid:
     docid=generateId()
-  doc=Document(docid=docid, database=db)
+    while Document.all().filter("docid =", docid).count()!=0:
+      docid=generateId()
+  elif Document.all().filter("docid =", docid).count()!=0:
+    return None
+
+  doc=Document(docid=docid, database=db, state=state)
   doc.save()
   return doc

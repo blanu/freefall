@@ -5,11 +5,11 @@
     <link href="/static/style.css" rel="stylesheet" type="text/css"/>
   </head>
   <body>
-    <button id="addDbButton">Add database</button>
+    <button id="addDbButton">Add document</button>
     <div class="hidden" id="addDbDialog">
-      Database name: <input type="text" id="addDbNameField"/>
+      Document name: <input type="text" id="addDbNameField"/>
     </div>
-    <ul id="dbs">
+    <ul id="docs">
     </ul>
   </body>
 
@@ -20,6 +20,7 @@
   <script type="text/javascript" src="/static/freefall.js"></script>
   <script type="text/javascript">
     userid="$userid";
+    dbid="$dbid";
   </script>
-  <script type="text/javascript" src="/static/index.js"></script>
+  <script type="text/javascript" src="/static/database.js"></script>
 </html>
