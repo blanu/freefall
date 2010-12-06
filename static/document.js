@@ -1,11 +1,5 @@
-var fullDoc=null;
-
-function getDoc()
-{
-  log('get doc');
-  var url='/db/'+dbid+'/'+docid;
-  $.getJSON(url, gotDoc);
-}
+var db=null;
+var doc=null;
 
 function gotDoc(doc)
 {
@@ -20,26 +14,32 @@ function gotDoc(doc)
 
 function saveDoc()
 {
-  var doc=$('#doc').val();
+  log('saving parsed doc')
+  var value=JSON.parse($('#doc').val());
+  log(value);
 
-  fullDoc=doc;
-
-  var url="/db/"+dbid+'/'+docid;
-  $.post(url, doc);
+  doc.save(value);
 }
 
 function initDocument()
 {
+  log('initDocument');
   $("#tabs").tabs();
+
+  db=freefall.Database(dbid);
+  doc=db.get(docid);
 
   log('listening doc-'+userid+'-'+dbid+'-'+docid);
   Web2Peer.listen('doc-'+userid+'-'+dbid+'-'+docid, gotDoc);
 
   $('#saveDoc').click(saveDoc);
+  log('button: ');
+  log($('#saveDoc'));
 
   $('input[name="type"]').change(changeType);
 
-  getDoc();
+  doc.setDocCallback(gotDoc);
+  doc.get();
 }
 
 $(document).ready(initDocument);

@@ -1,9 +1,4 @@
-function getDocs()
-{
-  log('get docs');
-  var url='/db/'+dbid;
-  $.getJSON(url, gotDocs);
-}
+var db=freefall.Database(dbid);
 
 function gotDocs(docs)
 {
@@ -16,20 +11,13 @@ function gotDocs(docs)
   }
 }
 
-function addDoc(docname)
-{
-  log('dbname: '+docname);
-  var url="/db/"+dbid+'/'+docname;
-  $.post(url, JSON.stringify(null));
-}
-
 function addDbDialog()
 {
   $("#addDbDialog").dialog({
     buttons: {
       "Add": function() {
         var dbname=$("#addDbNameField").val();
-        addDoc(dbname);
+        db.addDoc(dbname);
         $(this).dialog("close");
       },
       "Cancel": function() {
@@ -48,7 +36,8 @@ function initDatabase()
 
   $("#addDbButton").click(addDbDialog);
 
-  getDocs();
+  db.setDocsCallback(gotDocs);
+  db.getDocs();
 }
 
 $(document).ready(initDatabase);

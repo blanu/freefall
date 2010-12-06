@@ -61,6 +61,7 @@ class JsonPage(GenericPage):
       obj=loads(req.body)
     except:
       obj=None
+    logging.info('obj: '+str(obj))
     output=self.processJson(method.upper(), user, req, resp, args, obj)
 #    logging.debug('json output: '+str(output))
     if output!=None:

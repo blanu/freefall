@@ -195,7 +195,7 @@ function nparse(val)
 {
   try
   {
-    var val=parseFloat(val);
+    val=parseFloat(val);
     log('nparse: '+val);
     if(isNaN(val))
     {

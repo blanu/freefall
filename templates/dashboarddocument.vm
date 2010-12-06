@@ -33,6 +33,7 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
+  <script type="text/javascript" src="/lib/jquery.jsonp-2.1.4.min.js"></script>
   <script type="text/javascript" src="/lib/debug.js"></script>
   <script type="text/javascript" src="/static/freefall.js"></script>
   <script type="text/javascript">
