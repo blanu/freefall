@@ -1,13 +1,16 @@
-var db=freefall.Database(dbid);
+var db=freefall.Database('', dbid);
 
 function gotDocs(docs)
 {
   log('got docs');
   log(docs);
   $('#docs').empty();
-  for(var x=0; x<docs.length; x++)
+  if(docs!=null)
   {
-    $('#docs').append('<li><a class="doclink" href="/dashboard/'+dbid+'/'+docs[x]+'">'+docs[x]+'</a></li>');
+    for(var x=0; x<docs.length; x++)
+    {
+      $('#docs').append('<li><a class="doclink" href="/dashboard/'+dbid+'/'+docs[x]+'">'+docs[x]+'</a></li>');
+    }
   }
 }
 
@@ -17,6 +20,9 @@ function addDbDialog()
     buttons: {
       "Add": function() {
         var dbname=$("#addDbNameField").val();
+        log('addDoc call: '+dbname);
+        log(db);
+        log(db.addDoc);
         db.addDoc(dbname);
         $(this).dialog("close");
       },

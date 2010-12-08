@@ -140,7 +140,10 @@ class DocumentPage(JsonPage):
       if not doc:
         logging.error('Document with that id does not exist '+str(docid))
         return None
-      return loads(doc.state)
+      if not doc.state:
+        return null
+      else:
+        return loads(doc.state)
     elif method=='POST':
       doc=newDocument(db, obj, docid=docid)
       if not doc:

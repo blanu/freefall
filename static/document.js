@@ -9,7 +9,7 @@ function gotDoc(doc)
 
   fullDoc=doc;
 
-  renderEditor();
+//  renderEditor();
 }
 
 function saveDoc()
@@ -23,10 +23,11 @@ function saveDoc()
 
 function initDocument()
 {
-  log('initDocument');
+  log('initDocument: '+dbid+' '+docid);
   $("#tabs").tabs();
+  log('initDocument: '+dbid+' '+docid);
 
-  db=freefall.Database(dbid);
+  db=freefall.Database('', dbid);
   doc=db.get(docid);
 
   log('listening doc-'+userid+'-'+dbid+'-'+docid);
@@ -36,7 +37,7 @@ function initDocument()
   log('button: ');
   log($('#saveDoc'));
 
-  $('input[name="type"]').change(changeType);
+//  $('input[name="type"]').change(changeType);
 
   doc.setDocCallback(gotDoc);
   doc.get();

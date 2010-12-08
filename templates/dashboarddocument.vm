@@ -8,39 +8,39 @@
     <div id="tabs">
       <ul>
         <li><a href="#source"><span>Source</span></a></li>
-        <li><a href="#editor"><span>Editor</span></a></li>
+<!--        <li><a href="#editor"><span>Editor</span></a></li>-->
       </ul>
       <div id="source">
-        <textarea id="doc"></textarea>
-        <br/>
         <button id="saveDoc">Save</button>
+        <textarea id="doc" rows="25" cols="80"></textarea>
       </div>
+      <!--
       <div id="editor">
         <div id="typeControls">
-          <input type="radio" name="type" value="null"/><label for="null" class="null">null</label>
+          <input type="radio" name="type" value="null"><label for="null" class="null">null</label>
           <input type="radio" name="type" value="string"><label for="string" class="string">string</label>
           <input type="radio" name="type" value="number"><label for="number" class="number">number</label>
           <input type="radio" name="type" value="boolean"><label for="boolean" class="boolean">boolean</label>
           <input type="radio" name="type" value="array"><label for="array" class="array">array</label>
-          <input type="radio" name="type" value="map"><label for="map" class="map">map</label>
-          </input>
+          <input type="radio" name="type" value="map"><label for="map" class="map">map</label>        
         </div>
         <div id="editorMain">
         </div>
       </div>
+      -->
   </body>
 
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
-  <script type="text/javascript" src="/lib/jquery.jsonp-2.1.4.min.js"></script>
   <script type="text/javascript" src="/lib/debug.js"></script>
   <script type="text/javascript" src="/static/freefall.js"></script>
   <script type="text/javascript">
     userid="$userid";
     dbid="$dbid";
     docid="$docid";
+    log('Init document '+dbid+' '+docid);
   </script>
-  <script type="text/javascript" src="/static/editor.js"></script>
+<!--  <script type="text/javascript" src="/static/editor.js"></script>-->
   <script type="text/javascript" src="/static/document.js"></script>
 </html>
