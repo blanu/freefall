@@ -15,10 +15,19 @@ function gotDoc(doc)
 function saveDoc()
 {
   log('saving parsed doc')
-  var value=JSON.parse($('#doc').val());
+  var value=$('#doc').val();
   log(value);
 
-  doc.save(value);
+  if(jsonlint.parse(value))
+  {
+    value=JSON.parse(value);
+    doc.save(value);
+    $('#doc').val(JSON.stringify(value, null, '  '));
+  }
+  else
+  {
+    log('Invalid json: '+value);
+  }
 }
 
 function initDocument()
