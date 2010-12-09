@@ -3,6 +3,11 @@
   display: none;
 }
 
+#saveDoc
+{
+  float: left;
+}
+
 #drop
 {
   position: relative;

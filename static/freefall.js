@@ -32,6 +32,7 @@ $(function() {
 
 freefall.Document=function(db, did)
 {
+  log('new Document '+db.dbid+' '+did);
   this.db=db;
   this.docid=did;
   this.fullDoc=null;
@@ -46,7 +47,7 @@ freefall.Document=function(db, did)
   this.get=function()
   {
     log('get doc');
-    var url='http://blanu.net:8080/db/'+this.db.dbid+'/'+this.docid;
+    var url=this.base+'/db/'+this.db.dbid+'/'+this.docid;
     $.getJSON(url, this.docCallback);
   }
 
@@ -56,16 +57,18 @@ freefall.Document=function(db, did)
 
     this.fullDoc=doc;
 
-    var url="http://blanu.net:8080/db/"+this.db.dbid+'/'+this.docid;
+    var url=this.base+"/db/"+this.db.dbid+'/'+this.docid;
     $.post(url, JSON.stringify(doc));
   }
 
   return this;
 }
 
-freefall.Database=function(dbid)
+freefall.Database=function(base, id)
 {
-  this.dbid=dbid;
+  log('new Database '+base+' '+id);
+  this.base=base;
+  this.dbid=id;
 
   this.docsCallback=null;
 
@@ -77,14 +80,14 @@ freefall.Database=function(dbid)
   this.getDocs=function()
   {
     log('get docs');
-    var url='http://blanu.net:8080/db/'+this.dbid;
+    var url=this.base+'/db/'+this.dbid;
     $.getJSON(url, this.docsCallback);
   }
 
   this.addDoc=function(docname)
   {
     log('dbname: '+docname);
-    var url="http://blanu.net:8080/db/"+dbid+'/'+docname;
+    var url=this.base+"/db/"+this.dbid+'/'+docname;
     $.post(url, JSON.stringify(null));
   }
 
