@@ -111,6 +111,8 @@ function initFreefall()
 {
   Web2Peer.init("freefall");
   
+  log('Installing magic forms...');
+  log($('.freefall-form'));  
   $('.freefall-form').submit(freefall.submitForm);
 }
 
