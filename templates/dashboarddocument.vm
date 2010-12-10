@@ -22,7 +22,7 @@
           <input type="radio" name="type" value="number"><label for="number" class="number">number</label>
           <input type="radio" name="type" value="boolean"><label for="boolean" class="boolean">boolean</label>
           <input type="radio" name="type" value="array"><label for="array" class="array">array</label>
-          <input type="radio" name="type" value="map"><label for="map" class="map">map</label>        
+          <input type="radio" name="type" value="map"><label for="map" class="map">map</label>
         </div>
         <div id="editorMain">
         </div>
@@ -33,6 +33,8 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
+  <script type="text/javascript" src="/lib/json2.js"></script>
+  <script type="text/javascript" src="/lib/jsonlint.js"></script>
   <script type="text/javascript" src="/lib/debug.js"></script>
   <script type="text/javascript" src="/static/freefall.js"></script>
   <script type="text/javascript">

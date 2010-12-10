@@ -99,9 +99,19 @@ freefall.Database=function(base, id)
   return this;
 }
 
+freefall.submitForm=function()
+{
+	log('submitForm');
+	log(this);
+	
+	return false;
+}
+
 function initFreefall()
 {
   Web2Peer.init("freefall");
+  
+  $('.freefall-form').submit(freefall.submitForm);
 }
 
 $(document).ready(initFreefall);
