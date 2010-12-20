@@ -80,12 +80,14 @@ class DatabasePage(JsonPage):
   def processJson(self, method, user, req, resp, args, obj):
     dbid=args[0]
 
-    if method=='GET':
-      db=Database.all().filter("owner =", user).filter("dbid =", dbid).get()
-      if not db:
-        logging.error('Database with that id does not exist '+str(dbid))
-        return
+    resp.headers['Access-Control-Allow-Origin']='*'
 
+    db=Database.all().filter("dbid =", dbid).get()
+    if not db:
+      logging.error('Database with that id does not exist '+str(dbid))
+      return
+
+    if method=='GET':
 #    notify('freefall', 'dbs-'+user.email().lower()+'-newtab', dumps({'name': name, 'id': wave.waveid}))
 
       results=[]
@@ -95,13 +97,14 @@ class DatabasePage(JsonPage):
 
       return results
     elif method=='POST':
-      doc=newDocument(db, obj)
+      doc=newDocument(db, dumps(obj))
       if not doc:
         logging.error('Document id collision '+str(docid)+', overwriting...')
-        doc.state=obj
+        doc.state=dumps(obj)
         doc.save()
         return None
       else:
+        doc.save()
         docs=Document.all().filter('database =', db).fetch(10)
         results=[]
         for rdoc in docs:
@@ -109,7 +112,7 @@ class DatabasePage(JsonPage):
 
         logging.info('results: '+str(results))
 
-        notify('freefall', 'docs-'+user.email().lower()+'-'+db.dbid, dumps(results))
+        notify('freefall', db.dbid, dumps(results))
 
         return doc.docid
     else:
@@ -141,11 +144,11 @@ class DocumentPage(JsonPage):
         logging.error('Document with that id does not exist '+str(docid))
         return None
       if not doc.state:
-        return null
+        return None
       else:
         return loads(doc.state)
     elif method=='POST':
-      doc=newDocument(db, obj, docid=docid)
+      doc=newDocument(db, dumps(obj), docid=docid)
       if not doc:
         logging.error('Document id collision '+str(docid)+', overwriting...')
         doc=Document.all().filter("docid =", docid).get()
@@ -153,6 +156,7 @@ class DocumentPage(JsonPage):
         doc.state=dumps(obj)
         doc.save()
         logging.error('new state: '+str(doc.state))
+        notify('freefall', db.dbid+'-'+doc.docid, doc.state) # No need to dumps, already string
 
         return doc.docid
       else:
@@ -164,7 +168,7 @@ class DocumentPage(JsonPage):
         logging.info('results: '+str(results))
 
         logging.debug('notifying')
-        notify('freefall', 'docs-'+user.email().lower()+'-'+db.dbid, dumps(results))
+        notify('freefall', db.dbid, dumps(results))
         logging.debug('notified')
 
         return doc.docid
