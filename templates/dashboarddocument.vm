@@ -35,12 +35,12 @@
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
   <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.4/jquery-ui.min.js"></script>
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
-  <script type="text/javascript" src="/lib/json2.js"></script>
-  <script type="text/javascript" src="/lib/jsonlint.js"></script>
-  <script type="text/javascript" src="/lib/bespin/BespinEmbedded.js"></script>
-  <script type="text/javascript" src="/lib/debug.js"></script>
-  <script type="text/javascript" src="/static/freefall.js"></script>
-  <script type="text/javascript" data-main="main" src="static/require-jquery.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/lib/json2.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/lib/jsonlint.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/lib/bespin/BespinEmbedded.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/lib/debug.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/scripts/freefall.js"></script>
+  <script type="text/javascript" data-main="main" src="http://beta.freefalldb.com/scripts/require-jquery.js"></script>
   <script type="text/javascript">
     userid="$userid";
     dbid="$dbid";
@@ -48,5 +48,5 @@
     log('Init document '+dbid+' '+docid);
   </script>
 <!--  <script type="text/javascript" src="/static/editor.js"></script>-->
-  <script type="text/javascript" src="/static/document.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/scripts/document.js"></script>
 </html>
