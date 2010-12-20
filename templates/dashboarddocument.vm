@@ -3,6 +3,7 @@
     <title>FreefallDB</title>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <link href="/static/style.css" rel="stylesheet" type="text/css"/>
+    <link id="bespin_base" href="/lib/bespin"/>
   </head>
   <body>
     <div id="tabs">
@@ -12,7 +13,8 @@
       </ul>
       <div id="source">
         <button id="saveDoc">Save</button>
-        <textarea id="doc" rows="25" cols="80"></textarea>
+<!--        <textarea id="doc" class="bespin" data-bespinoptions='{"stealFocus": true, "syntax": "js"}' rows="25" cols="80"></textarea>-->
+        <div id="doc" class="bespin" data-bespinoptions='{"stealFocus": true, "syntax": "js"}'/>
       </div>
       <!--
       <div id="editor">
@@ -35,6 +37,7 @@
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
   <script type="text/javascript" src="/lib/json2.js"></script>
   <script type="text/javascript" src="/lib/jsonlint.js"></script>
+  <script type="text/javascript" src="/lib/bespin/BespinEmbedded.js"></script>
   <script type="text/javascript" src="/lib/debug.js"></script>
   <script type="text/javascript" src="/static/freefall.js"></script>
   <script type="text/javascript">
