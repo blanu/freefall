@@ -3,7 +3,7 @@
     <title>FreefallDB</title>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <link href="/static/style.css" rel="stylesheet" type="text/css"/>
-    <link id="bespin_base" href="/lib/bespin"/>
+    <link id="bespin_base" href="http://beta.freefalldb.com/lib/bespin"/>
   </head>
   <body>
     <div id="tabs">

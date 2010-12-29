@@ -16,10 +16,4 @@ long_line_behaviour=1
 long_line_column=72
 
 [files]
-current_page=3
-FILE_NAME_0=29;Javascript;0;16;1;1;0;/home/brandon/freefall/static/database.js;0
-FILE_NAME_1=1313;Javascript;0;16;1;1;0;/home/brandon/freefall/static/freefall.js;0
-FILE_NAME_2=418;HTML;0;16;1;1;0;/home/brandon/freefall/templates/dashboarddocument.vm;0
-FILE_NAME_3=138;Javascript;0;16;1;1;0;/home/brandon/freefall/static/document.js;0
-FILE_NAME_4=0;Javascript;0;16;0;1;0;/home/brandon/freefall/static/editor.js;0
-FILE_NAME_5=3887;Python;0;16;0;1;0;/home/brandon/freefall/api.py;0
+current_page=-1
