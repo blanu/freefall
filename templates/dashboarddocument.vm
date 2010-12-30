@@ -13,8 +13,8 @@
       </ul>
       <div id="source">
         <button id="saveDoc">Save</button>
-<!--        <textarea id="doc" class="bespin" data-bespinoptions='{"stealFocus": true, "syntax": "js"}' rows="25" cols="80"></textarea>-->
-        <div id="doc" class="bespin" data-bespinoptions='{"stealFocus": true, "syntax": "js"}'/>
+        <textarea id="doc" class="bespin" data-bespinoptions='{"stealFocus": true, "syntax": "js"}' rows="25" cols="80"></textarea>
+<!--        <div id="doc" class="bespin" data-bespinoptions='{"stealFocus": true, "syntax": "js"}'/>-->
       </div>
       <!--
       <div id="editor">
@@ -37,7 +37,7 @@
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
   <script type="text/javascript" src="http://beta.freefalldb.com/lib/json2.js"></script>
   <script type="text/javascript" src="http://beta.freefalldb.com/lib/jsonlint.js"></script>
-  <script type="text/javascript" src="http://beta.freefalldb.com/lib/bespin/BespinEmbedded.js"></script>
+<!--  <script type="text/javascript" src="http://beta.freefalldb.com/lib/bespin/BespinEmbedded.js"></script>-->
   <script type="text/javascript" src="http://beta.freefalldb.com/lib/debug.js"></script>
   <script type="text/javascript" src="http://beta.freefalldb.com/scripts/freefall.js"></script>
 <!--  <script type="text/javascript" data-main="main" src="http://beta.freefalldb.com/scripts/require-jquery.js"></script>-->
