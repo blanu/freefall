@@ -13,7 +13,10 @@ class Document(db.Model):
   state=db.TextProperty()
 
 class View(db.Model):
+  database=db.ReferenceProperty(Database, required=True)
   viewid=db.StringProperty(required=True)
+  viewkey=db.TextProperty(required=True)
+  value=db.TextProperty(required=True)
 
 #class Participant(db.Model):
 #  wave=db.ReferenceProperty(Wave, required=True)

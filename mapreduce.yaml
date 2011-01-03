@@ -1,0 +1,14 @@
+mapreduce:
+- name: views
+  mapper:
+    input_reader: mapreduce.input_readers.DatastoreInputReader
+    handler: views.process
+    params:
+    - name: entity_kind
+      default: models.Document
+    - name: nodeUrl
+      default: http://freefallnode.appspot.com
+    - name: viewName
+      default: test
+    - name: dbid
+      default: surface
