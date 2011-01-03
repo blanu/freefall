@@ -23,8 +23,7 @@ from generic import TemplatePage, JsonPage, GenericPage, FilePage
 from models import *
 
 def notify(apikey, channel, msg):
-  logging.debug('notify:')
-  logging.debug(msg)
+  logging.debug('notify('+str(channel)+'): '+str(msg))
 
   fields={
     'apikey': apikey,
