@@ -48,7 +48,7 @@ class NewDatabasePage(JsonPage):
       logging.error('db: '+str(db))
       logging.info('dbid: '+str(db.dbid))
 
-      dbs=Database.all().filter("owner =", user).fetch(10)
+      dbs=Database.all().filter("owner =", user).fetch(100)
       results=[]
       for rdb in dbs:
         results.append(rdb.dbid)
@@ -64,7 +64,7 @@ class NewDatabasePage(JsonPage):
 
 class DatabasesPage(JsonPage):
   def processJson(self, method, user, req, resp, args, obj):
-    dbs=Database.all().filter("owner =", user).fetch(10)
+    dbs=Database.all().filter("owner =", user).fetch(100)
     results=[]
     for db in dbs:
       results.append(db.dbid)
@@ -91,7 +91,7 @@ class DatabasePage(JsonPage):
 #    notify('freefall', 'dbs-'+user.email().lower()+'-newtab', dumps({'name': name, 'id': wave.waveid}))
 
       results=[]
-      docs=Document.all().filter("database =", db).fetch(10)
+      docs=Document.all().filter("database =", db).fetch(100)
       for doc in docs:
         results.append(doc.docid)
 
@@ -105,7 +105,7 @@ class DatabasePage(JsonPage):
         return None
       else:
         doc.save()
-        docs=Document.all().filter('database =', db).fetch(10)
+        docs=Document.all().filter('database =', db).fetch(100)
         results=[]
         for rdoc in docs:
           results.append(rdoc.docid)
@@ -160,7 +160,7 @@ class DocumentPage(JsonPage):
 
         return doc.docid
       else:
-        docs=Document.all().filter('database =', db).fetch(10)
+        docs=Document.all().filter('database =', db).fetch(100)
         results=[]
         for rdoc in docs:
           results.append(rdoc.docid)
