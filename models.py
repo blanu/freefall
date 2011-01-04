@@ -15,7 +15,7 @@ class Document(db.Model):
 class View(db.Model):
   database=db.ReferenceProperty(Database, required=True)
   viewid=db.StringProperty(required=True)
-  viewkey=db.TextProperty(required=True)
+  viewkey=db.StringProperty(required=True)
   value=db.TextProperty(required=True)
 
 #class Participant(db.Model):

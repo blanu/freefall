@@ -182,30 +182,39 @@ class ViewPage(JsonPage):
   def processJson(self, method, user, req, resp, args, obj):
     dbid=args[0]
     viewid=args[1]
+    key=req.get('key', None) # Key should already be in JSON encoding, so we can compare directly
+    logging.info("key: "+str(key))
 
     resp.headers['Access-Control-Allow-Origin']='*'
 
-    db=Database.all().filter("dbid =", dbid).get()
-    if not db:
+    viewdb=Database.all().filter("dbid =", dbid).get()
+    if not viewdb:
       logging.error('Database with that id does not exist '+str(dbid))
       return None
 
     if method=='GET':
       results=[]
-      views=View.all().filter("database =", db).filter('viewid =', viewid).fetch(100)
+      if(key==None):
+        views=View.all().filter("database =", viewdb).filter('viewid =', viewid).fetch(100)
+      else:
+        logging.info(str(db.GqlQuery("SELECT * FROM View WHERE database = :1 AND viewid = :2", viewdb, viewid).fetch(100)[0].viewkey))
+        logging.info(str(db.GqlQuery("SELECT * FROM View WHERE database = :1 AND viewid = :2 and viewkey = :3", viewdb, viewid, key).fetch(100)))
+        logging.info(str(key))
+        views=db.GqlQuery("SELECT * FROM View WHERE database = :1 AND viewid = :2 and viewkey = :3", viewdb, viewid, key).fetch(100)
+
       if not views:
-        logging.error('Document with that id does not exist '+str(docid))
+        logging.error('View with that id does not exist or is empty '+str(viewid))
         return []
       for view in views:
         if view.viewkey==None:
-          key=None
+          viewkey=None
         else:
-          key=loads(view.viewkey)
+          viewkey=loads(view.viewkey)
         if view.value==None:
           value=None
         else:
           value=loads(view.value)
-        result={'key': key, 'value': value}
+        result={'viewid': viewid, 'viewkey': viewkey, 'value': value}
         results.append(result)
       return results
 
