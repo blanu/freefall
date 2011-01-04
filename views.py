@@ -23,15 +23,16 @@ def process(entity):
     return
 
   data=loads(result.content)
-  logging.info('got view result: '+str(data))
-  key=data['key']
-  value=data['value']
 
-  db=Database.all().filter("dbid =", dbid).get()
-  if(db==None):
-    loggin.error("No such database "+str(dbid))
-    return
+  if data!=None:
+    logging.info('got view result: '+str(data))
+    key=data['key']
+    value=data['value']
 
-  view=View(database=db, viewid=viewName, viewkey=dumps(key), value=dumps(value))
-  view.save()
+    db=Database.all().filter("dbid =", dbid).get()
+    if(db==None):
+      logging.error("No such database "+str(dbid))
+      return
 
+    view=View(database=db, viewid=viewName, viewkey=dumps(key), value=dumps(value))
+    view.save()

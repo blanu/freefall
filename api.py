@@ -177,3 +177,37 @@ class DocumentPage(JsonPage):
 
   def requireLogin(self):
     return False
+
+class ViewPage(JsonPage):
+  def processJson(self, method, user, req, resp, args, obj):
+    dbid=args[0]
+    viewid=args[1]
+
+    resp.headers['Access-Control-Allow-Origin']='*'
+
+    db=Database.all().filter("dbid =", dbid).get()
+    if not db:
+      logging.error('Database with that id does not exist '+str(dbid))
+      return None
+
+    if method=='GET':
+      results=[]
+      views=View.all().filter("database =", db).filter('viewid =', viewid).fetch(100)
+      if not views:
+        logging.error('Document with that id does not exist '+str(docid))
+        return []
+      for view in views:
+        if view.viewkey==None:
+          key=None
+        else:
+          key=loads(view.viewkey)
+        if view.value==None:
+          value=None
+        else:
+          value=loads(view.value)
+        result={'key': key, 'value': value}
+        results.append(result)
+      return results
+
+  def requireLogin(self):
+    return False

@@ -17,6 +17,7 @@ application = webapp.WSGIApplication([
 
   ('/db', DatabasesPage),
   ('/db/new', NewDatabasePage),
+  ('/db/(.*)/views/(.*)', ViewPage),
   ('/db/(.*)/(.*)', DocumentPage),
   ('/db/(.*)', DatabasePage),
 ], debug=True)
