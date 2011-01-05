@@ -204,19 +204,12 @@ class ViewPage(JsonPage):
 
       if not views:
         logging.error('View with that id does not exist or is empty '+str(viewid))
-        return []
+        return {'viewid': viewid, 'viewkey': loads(key), 'results': results}
       for view in views:
-        if view.viewkey==None:
-          viewkey=None
-        else:
-          viewkey=loads(view.viewkey)
-        if view.value==None:
-          value=None
-        else:
+        if view.value!=None:
           value=loads(view.value)
-        result={'viewid': viewid, 'viewkey': viewkey, 'value': value}
-        results.append(result)
-      return results
+          results.append(value)
+      return {'viewid': viewid, 'viewkey': loads(key), 'results': results}
 
   def requireLogin(self):
     return False
