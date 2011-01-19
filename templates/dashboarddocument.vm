@@ -3,7 +3,6 @@
     <title>FreefallDB</title>
     <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
     <link href="http://beta.freefalldb.com/styles/style.css" rel="stylesheet" type="text/css"/>
-    <link id="bespin_base" href="http://beta.freefalldb.com/lib/bespin"/>
   </head>
   <body>
     <div id="tabs">
@@ -37,8 +36,8 @@
   <script type="text/javascript" src="http://omgwerock.com/~gah/web2peer/web2peer.js"></script>
   <script type="text/javascript" src="http://beta.freefalldb.com/lib/json2.js"></script>
   <script type="text/javascript" src="http://beta.freefalldb.com/lib/jsonlint.js"></script>
-<!--  <script type="text/javascript" src="http://beta.freefalldb.com/lib/bespin/BespinEmbedded.js"></script>-->
   <script type="text/javascript" src="http://beta.freefalldb.com/lib/debug.js"></script>
+  <script type="text/javascript" src="http://beta.freefalldb.com/lib/codemirror/codemirror.js"></script>
   <script type="text/javascript" src="http://beta.freefalldb.com/scripts/freefall.js"></script>
 <!--  <script type="text/javascript" data-main="main" src="http://beta.freefalldb.com/scripts/require-jquery.js"></script>-->
   <script type="text/javascript">
