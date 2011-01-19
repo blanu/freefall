@@ -80,8 +80,6 @@ class DatabasePage(JsonPage):
   def processJson(self, method, user, req, resp, args, obj):
     dbid=args[0]
 
-    resp.headers['Access-Control-Allow-Origin']='*'
-
     db=Database.all().filter("dbid =", dbid).get()
     if not db:
       logging.error('Database with that id does not exist '+str(dbid))
@@ -129,9 +127,6 @@ class DocumentPage(JsonPage):
     dbid=args[0]
     docid=args[1]
 
-    logging.info('Setting Access-Control-Allow-Origin')
-    resp.headers['Access-Control-Allow-Origin']='*'
-
 #    db=Database.all().filter("owner =", user).filter("dbid =", dbid).get()
     db=Database.all().filter("dbid =", dbid).get()
     if not db:
@@ -142,6 +137,16 @@ class DocumentPage(JsonPage):
       doc=Document.all().filter("database =", db).filter('docid =', docid).get()
       if not doc:
         logging.error('Document with that id does not exist '+str(docid))
+        
+        config=loadConfig(db)
+        logging.info('config: '+str(config))
+        baseUrl=resolveConfig(config, ['node'])
+        logging.info('baseUrl: '+str(baseUrl))
+        errorHandler=resolveConfig(config, ['error', 'notFound'])
+        logging.info('errorHandler: '+str(errorHandler))
+        if baseUrl and errorHandler:
+          callNode(baseUrl+'/'+errorHandler, docid)
+        
         return None
       if not doc.state:
         return None
@@ -154,26 +159,49 @@ class DocumentPage(JsonPage):
         doc=Document.all().filter("docid =", docid).get()
         logging.error('state: '+str(doc.state))
         doc.state=dumps(obj)
-        doc.save()
+        doc.save()              
         logging.error('new state: '+str(doc.state))
         notify('freefall', db.dbid+'-'+doc.docid, doc.state) # No need to dumps, already string
 
+        purgeViews(doc)
+
         return doc.docid
       else:
-        docs=Document.all().filter('database =', db).fetch(100)
-        results=[]
-        for rdoc in docs:
-          results.append(rdoc.docid)
-
-        logging.info('results: '+str(results))
-
         logging.debug('notifying')
-        notify('freefall', db.dbid, dumps(results))
+        notify('freefall', db.dbid, dumps(listDocs(db)))
         logging.debug('notified')
 
         return doc.docid
     else:
       logging.error('Unknown method '+str(method))
+
+  def requireLogin(self):
+    return False
+
+class DeleteDocumentPage(JsonPage):
+  def processJson(self, method, user, req, resp, args, obj):
+    logging.info('document')
+    logging.info(method)
+
+    dbid=args[0]
+    docid=args[1]
+
+#    db=Database.all().filter("owner =", user).filter("dbid =", dbid).get()
+    db=Database.all().filter("dbid =", dbid).get()
+    if not db:
+      logging.error('Database with that id does not exist '+str(dbid))
+      return None
+
+    doc=Document.all().filter("docid =", docid).get()
+    if not doc:
+      logging.error('No doc to delete '+str(docid))
+    else:
+      doc.delete()
+      purgeViews(doc)
+
+    logging.debug('notifying')
+    notify('freefall', db.dbid, dumps(listDocs(db)))
+    logging.debug('notified')
 
   def requireLogin(self):
     return False
@@ -184,8 +212,6 @@ class ViewPage(JsonPage):
     viewid=args[1]
     key=req.get('key', None) # Key should already be in JSON encoding, so we can compare directly
     logging.info("key: "+str(key))
-
-    resp.headers['Access-Control-Allow-Origin']='*'
 
     viewdb=Database.all().filter("dbid =", dbid).get()
     if not viewdb:

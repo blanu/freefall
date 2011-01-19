@@ -14,9 +14,14 @@ class Document(db.Model):
 
 class View(db.Model):
   database=db.ReferenceProperty(Database, required=True)
+  source=db.ReferenceProperty(Document, required=True)
   viewid=db.StringProperty(required=True)
   viewkey=db.StringProperty(required=True)
   value=db.TextProperty(required=True)
+  
+class Session(db.Model):
+  user=db.UserProperty(required=True)
+  sessionid=db.StringProperty(required=True)
 
 #class Participant(db.Model):
 #  wave=db.ReferenceProperty(Wave, required=True)

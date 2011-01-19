@@ -89,3 +89,64 @@ def newDocument(db, state, docid=None):
   doc=Document(docid=docid, database=db, state=state)
   doc.save()
   return doc
+
+def newSession(user):
+  logging.error('ns user: '+str(user))
+  sessionid=generateId()
+  while Session.all().filter("sessionid =", sessionid).count()!=0:
+      sessionid=generateId()
+
+  logging.info('using '+str(sessionid))
+  session=Session(user=user, sessionid=sessionid)
+  session.save()
+  return session
+
+def listDocs(db):
+  results=[]
+  docs=Document.all().filter('database =', db).fetch(100)
+  for rdoc in docs:
+    results.append(rdoc.docid)
+
+  logging.info('results: '+str(results))
+  return results
+
+def purgeViews(doc):
+  logging.info('Purging views for '+str(doc))
+  views=View.all().filter('source =', doc).fetch(100)
+  for view in views:
+    view.delete()
+    
+def runViews(nodeUrl, viewName, doc):
+  pass
+    
+def loadConfig(db):
+  configDoc=Document.all().filter("database =", db).filter("docid =", "_config").get()
+  if not configDoc:
+    return {}
+  else:
+    return loads(configDoc.state)
+    
+def resolveConfig(config, keys):
+  value=config
+  for key in keys:
+    if key in value:
+      value=value[key]
+    else:
+      return None
+  return value
+  
+def callNode(url, params):
+  logging.info('Calling node '+str(url)+' '+str(params))
+  form_data = urllib.urlencode({"value": dumps(params)})
+  try:
+    result = urlfetch.fetch(url=url, payload=form_data, method=urlfetch.POST, headers={'Content-Type': 'application/x-www-form-urlencoded'})
+  except:
+    logging.error('Exception in fetch')
+    return None
+  if result.status_code != 200:
+    logging.error("Bad result: "+str(result.status_code))
+    return None
+
+  data=loads(result.content)
+  return data
+  

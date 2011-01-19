@@ -26,6 +26,7 @@ from util import *
 class IndexPage(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     logging.debug("index")
+    logging.debug(user)
     if not user:
       self.redirect('/welcome')
     else:
@@ -47,6 +48,40 @@ class LoginPage(TemplatePage):
 
   def requireLogin(self):
     return True
+
+class CheckSessionPage(TemplatePage):
+  def processContext(self, method, user, req, resp, args, context):
+    logging.info('authenticate')
+    logging.info(user)    
+    
+    if user:
+      context['success']=True
+      context['email']=user.email()
+      
+      session=Session.all().filter('user =', user).get()
+      if not session:
+        session=newSession(user)
+      context['sessionid']=session.sessionid
+    else:
+      context['success']=False
+
+  def requireLogin(self):
+    return False
+
+class NewSessionPage(TemplatePage):
+  def processContext(self, method, user, req, resp, args, context):
+    logging.info('authenticate')
+    logging.info(user)    
+    
+    if user:
+      context['success']=True
+      context['email']=user.email()
+    else:
+      context['success']=False
+      context['url']=users.create_login_url(req.uri)
+
+  def requireLogin(self):
+    return False
 
 class DashboardIndexPage(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
