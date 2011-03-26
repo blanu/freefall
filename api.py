@@ -117,7 +117,7 @@ class DatabasePage(JsonPage):
       logging.error('Unknown method '+str(method))
 
   def requireLogin(self):
-    return True
+    return False
 
 class DocumentPage(JsonPage):
   def processJson(self, method, user, req, resp, args, obj):
@@ -137,7 +137,7 @@ class DocumentPage(JsonPage):
       doc=Document.all().filter("database =", db).filter('docid =', docid).get()
       if not doc:
         logging.error('Document with that id does not exist '+str(docid))
-        
+
         config=loadConfig(db)
         logging.info('config: '+str(config))
         baseUrl=resolveConfig(config, ['node'])
@@ -146,7 +146,7 @@ class DocumentPage(JsonPage):
         logging.info('errorHandler: '+str(errorHandler))
         if baseUrl and errorHandler:
           callNode(baseUrl+'/'+errorHandler, docid)
-        
+
         return None
       if not doc.state:
         return None
@@ -159,7 +159,7 @@ class DocumentPage(JsonPage):
         doc=Document.all().filter("docid =", docid).get()
         logging.error('state: '+str(doc.state))
         doc.state=dumps(obj)
-        doc.save()              
+        doc.save()
         logging.error('new state: '+str(doc.state))
         notify('freefall', db.dbid+'-'+doc.docid, doc.state) # No need to dumps, already string
 
@@ -236,6 +236,22 @@ class ViewPage(JsonPage):
           value=loads(view.value)
           results.append(value)
       return {'viewid': viewid, 'viewkey': loads(key), 'results': results}
+
+  def requireLogin(self):
+    return False
+
+class AllPage(JsonPage):
+  def processJson(self, method, user, req, resp, args, obj):
+    dbid=args[0]
+
+    db=Database.all().filter("dbid =", dbid).get()
+    if not db:
+      logging.error('Database with that id does not exist '+str(dbid))
+      return None
+
+
+    if method=='GET':
+      return getDocs(db)
 
   def requireLogin(self):
     return False

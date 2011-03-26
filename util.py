@@ -101,6 +101,15 @@ def newSession(user):
   session.save()
   return session
 
+def getDocs(db):
+  results={}
+  docs=Document.all().filter('database =', db).fetch(100)
+  for rdoc in docs:
+    results[rdoc.docid]=loads(rdoc.state)
+
+  logging.info('results: '+str(results))
+  return results
+
 def listDocs(db):
   results=[]
   docs=Document.all().filter('database =', db).fetch(100)
@@ -115,17 +124,17 @@ def purgeViews(doc):
   views=View.all().filter('source =', doc).fetch(100)
   for view in views:
     view.delete()
-    
+
 def runViews(nodeUrl, viewName, doc):
   pass
-    
+
 def loadConfig(db):
   configDoc=Document.all().filter("database =", db).filter("docid =", "_config").get()
   if not configDoc:
     return {}
   else:
     return loads(configDoc.state)
-    
+
 def resolveConfig(config, keys):
   value=config
   for key in keys:
@@ -134,7 +143,7 @@ def resolveConfig(config, keys):
     else:
       return None
   return value
-  
+
 def callNode(url, params):
   logging.info('Calling node '+str(url)+' '+str(params))
   form_data = urllib.urlencode({"value": dumps(params)})
@@ -149,4 +158,4 @@ def callNode(url, params):
 
   data=loads(result.content)
   return data
-  
+
