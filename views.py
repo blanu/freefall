@@ -1,8 +1,6 @@
 import logging
 import urllib
 from google.appengine.api import urlfetch
-from mapreduce import context
-from mapreduce import operation as op
 from django.utils.simplejson import loads, dumps
 
 from models import *
