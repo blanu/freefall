@@ -1,0 +1,5 @@
+[
+  ["add", ["test1", "value1"]],
+  ["mod", ["test1", [], null, "value2"]],
+  ["del", ["test1", [], null]]
+]
