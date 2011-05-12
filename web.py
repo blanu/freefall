@@ -6,24 +6,21 @@ from pages import *
 from api import *
 
 application = webapp.WSGIApplication([
-  ('/', IndexPage),
-  ('/index.html', IndexPage),
-  ('/welcome', WelcomePage),
-  ('/login', LoginPage),
+  ('/', Index),
+  ('/index.html', Index),
+  ('/welcome', Welcome),
+  ('/login', Login),
 
-  ('/dashboard/(.*)/(.*)', DashboardDocumentPage),
-  ('/dashboard/(.*)', DashboardDatabasePage),
-  ('/dashboard', DashboardIndexPage),
+  ('/dashboard/(.*)/(.*)', DashboardDocument),
+  ('/dashboard/(.*)', DashboardDatabase),
+  ('/dashboard', DashboardIndex),
 
-  ('/session/new', NewSessionPage),
-  ('/session/check', CheckSessionPage),
-  ('/db', DatabasesPage),
-  ('/db/new', NewDatabasePage),
-  ('/db/(.*)/all', AllPage),
-  ('/db/(.*)/views/(.*)', ViewPage),
-  ('/db/(.*)/(.*)/delete', DeleteDocumentPage),
-  ('/db/(.*)/(.*)', DocumentPage),
-  ('/db/(.*)', DatabasePage),
+  ('/session/new', NewSession),
+  ('/session/check', CheckSession),
+  
+  ('/db', DatabaseService),
+  ('/view', ViewService),
+  ('/document', DocumentService),
 ], debug=True)
 
 def main():
