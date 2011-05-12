@@ -1,0 +1,8 @@
+#!/usr/bin/python
+import sys
+from jsonrpc import ServiceProxy
+
+dbid=sys.argv[1]
+
+s=ServiceProxy('http://freefall.blanu.net/db')
+print s.new(dbid)
