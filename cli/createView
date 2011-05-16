@@ -1,0 +1,10 @@
+#!/usr/bin/python
+import sys
+from jsonrpc import ServiceProxy
+
+dbid=sys.argv[1]
+viewId=sys.argv[2]
+viewUrl=sys.argv[3]
+
+s=ServiceProxy('http://freefall.blanu.net/view')
+print s.new(dbid, viewId, viewUrl)
