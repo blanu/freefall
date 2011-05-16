@@ -5,6 +5,7 @@ from google.appengine.ext import webapp
 from django.utils.simplejson import loads, dumps
 
 from airspeed import CachingFileLoader
+from jsonrpc.handler import JSONRPC
 
 class GenericPage(webapp.RequestHandler):
   def options(self, *args):
@@ -93,3 +94,10 @@ class FilePage(GenericPage):
 
   def processFile(self, method, user, req, resp, args, obj):
     pass
+
+class JsonRpcService(webapp.RequestHandler, JSONRPC):
+    def post(self):
+        response, code = self.handleRequest(self.request.body, self.HTTP_POST)
+        self.response.headers['Content-Type'] = 'application/json'
+        self.response.set_status(code)
+        self.response.out.write(response)
