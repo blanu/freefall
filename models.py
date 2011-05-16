@@ -4,13 +4,17 @@ from google.appengine.ext import blobstore
 
 class Database(db.Model):
   dbid=db.StringProperty(required=True)
-  owner=db.UserProperty(required=True)
+  depends=db.SelfReferenceProperty()
+  viewUrl=db.StringProperty()
+  version=db.StringProperty()
 
 class Document(db.Model):
   docid=db.StringProperty(required=True)
   database=db.ReferenceProperty(Database, required=True)
 #  participant=db.ReferenceProperty(Participant)
   state=db.TextProperty()
+  depends=db.SelfReferenceProperty()
+  version=db.StringProperty()
 
 class View(db.Model):
   database=db.ReferenceProperty(Database, required=True)
@@ -22,10 +26,3 @@ class View(db.Model):
 class Session(db.Model):
   user=db.UserProperty(required=True)
   sessionid=db.StringProperty(required=True)
-
-#class Participant(db.Model):
-#  wave=db.ReferenceProperty(Wave, required=True)
-#  user=db.UserProperty(required=True)
-
-#class Shard(db.Model):
-#  gadget=db.ReferenceProperty(Gadget, required=True)
