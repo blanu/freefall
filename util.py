@@ -63,33 +63,6 @@ def generateId():
 
   return s
 
-def newDatabase(owner, dbid=None):
-  logging.error('nd dbid: '+str(dbid))
-  if not dbid:
-    logging.debug('no dbid')
-    dbid=generateId()
-    while Database.all().filter("dbid =", dbid).count()!=0:
-      dbid=generateId()
-  elif Database.all().filter("owner =", owner).filter("dbid =", dbid).count()!=0:
-    return None
-
-  logging.info('using '+str(dbid))
-  db=Database(dbid=dbid, owner=owner)
-  db.save()
-  return db
-
-def newDocument(db, state, docid=None):
-  if not docid:
-    docid=generateId()
-    while Document.all().filter("docid =", docid).count()!=0:
-      docid=generateId()
-  elif Document.all().filter("docid =", docid).count()!=0:
-    return None
-
-  doc=Document(docid=docid, database=db, state=state)
-  doc.save()
-  return doc
-
 def newSession(user):
   logging.error('ns user: '+str(user))
   sessionid=generateId()
@@ -119,15 +92,6 @@ def listDocs(db):
   logging.info('results: '+str(results))
   return results
 
-def purgeViews(doc):
-  logging.info('Purging views for '+str(doc))
-  views=View.all().filter('source =', doc).fetch(100)
-  for view in views:
-    view.delete()
-
-def runViews(nodeUrl, viewName, doc):
-  pass
-
 def loadConfig(db):
   configDoc=Document.all().filter("database =", db).filter("docid =", "_config").get()
   if not configDoc:
@@ -144,18 +108,24 @@ def resolveConfig(config, keys):
       return None
   return value
 
-def callNode(url, params):
-  logging.info('Calling node '+str(url)+' '+str(params))
-  form_data = urllib.urlencode({"value": dumps(params)})
-  try:
-    result = urlfetch.fetch(url=url, payload=form_data, method=urlfetch.POST, headers={'Content-Type': 'application/x-www-form-urlencoded'})
-  except:
-    logging.error('Exception in fetch')
-    return None
-  if result.status_code != 200:
-    logging.error("Bad result: "+str(result.status_code))
+def lookupDb(path):
+  if type(path)!=list:
+    path=[path]
+    
+  dbid=path[0]
+  path=path[1:]
+  
+  db=Database.all().filter("dbid =", dbid).get()
+  if not db:
+    logging.error('Database with that id does not exist '+str(dbid))
     return None
 
-  data=loads(result.content)
-  return data
+  while len(path)>0:
+    dbid=path[0]
+    path=path[1:]
+    db=Database.all().ancestor(db).filter("dbid =", viewId).get()
+    if not db:
+      logging.error('Database with that id does not exist '+str(dbid))
+      return None
 
+  return db
