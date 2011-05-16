@@ -23,7 +23,7 @@ from generic import TemplatePage, GenericPage, FilePage
 from models import *
 from util import *
 
-class IndexPage(TemplatePage):
+class Index(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     logging.debug("index")
     logging.debug(user)
@@ -35,21 +35,21 @@ class IndexPage(TemplatePage):
   def requireLogin(self):
     return False
 
-class WelcomePage(TemplatePage):
+class Welcome(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     pass
 
   def requireLogin(self):
     return False
 
-class LoginPage(TemplatePage):
+class Login(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     self.redirect('/')
 
   def requireLogin(self):
     return True
 
-class CheckSessionPage(TemplatePage):
+class CheckSession(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     logging.info('authenticate')
     logging.info(user)    
@@ -68,7 +68,7 @@ class CheckSessionPage(TemplatePage):
   def requireLogin(self):
     return False
 
-class NewSessionPage(TemplatePage):
+class NewSession(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     logging.info('authenticate')
     logging.info(user)    
@@ -83,7 +83,7 @@ class NewSessionPage(TemplatePage):
   def requireLogin(self):
     return False
 
-class DashboardIndexPage(TemplatePage):
+class DashboardIndex(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     logging.debug("dashboard index")
     context['userid']=user.email().lower()
@@ -91,7 +91,7 @@ class DashboardIndexPage(TemplatePage):
   def requireLogin(self):
     return True
 
-class DashboardDatabasePage(TemplatePage):
+class DashboardDatabase(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     dbid=args[0]
     logging.debug("dashboard db "+str(dbid))
@@ -101,7 +101,7 @@ class DashboardDatabasePage(TemplatePage):
   def requireLogin(self):
     return True
 
-class DashboardDocumentPage(TemplatePage):
+class DashboardDocument(TemplatePage):
   def processContext(self, method, user, req, resp, args, context):
     dbid=args[0]
     docid=args[1]
@@ -113,44 +113,3 @@ class DashboardDocumentPage(TemplatePage):
 
   def requireLogin(self):
     return True
-
-class WavePage(TemplatePage):
-  def processContext(self, method, user, req, resp, args, context):
-    waveId=unquote_plus(args[0])
-    logging.debug('wave page: '+str(waveId))
-    context['userid']=user.email().lower()
-    wave=Wave.all().filter("waveid =", waveId).get()
-    logging.debug("wave: "+str(wave));
-    if not wave:
-      return
-    context['wave']=wave
-    gadgets=Gadget.all().filter("wave =", wave).fetch(10)
-    logging.debug('gadgets: '+str(gadgets))
-    if not gadgets or len(gadgets)==0:
-      context['gadgets']=None
-    else:
-      context['gadgets']=gadgets
-
-  def requireLogin(self):
-    return True
-
-class AdminIndexPage(TemplatePage):
-  def processContext(self, method, user, req, resp, args, context):
-    pass
-
-class AdminCuratedPage(TemplatePage):
-  def processContext(self, method, user, req, resp, args, context):
-    pass
-
-class AdminNewCuratedPage(TemplatePage):
-  def processContext(self, method, user, req, resp, args, context):
-    logging.debug('curated new')
-    name=req.get('name')
-    url=req.get('url')
-    iconUrl=req.get('iconUrl')
-    linkbot=req.get('linkbot')
-    if linkbot.strip()=='':
-      linkbot=None
-
-    c=Curated(name=name, url=url, iconUrl=iconUrl, linkbot=linkbot)
-    c.save()
